@@ -47,9 +47,16 @@
         });
 
 
-        var markerSymbol = {
+        var markerSymbolAllowed = {
             type: "simple-marker",
-            color: [226, 119, 40],
+            color: [90, 200, 250],
+            outline: {color: [255, 255, 255],width: 1},
+            size: "10px"
+        };
+            
+        var markerSymbolBlocked = {
+            type: "simple-marker",
+            color: [224, 20, 20],
             outline: {color: [255, 255, 255],width: 1},
             size: "10px"
         };
@@ -75,10 +82,16 @@
                         //console.log(coords);
                          var popupTemplate = {
                             title: coords[0],
-                            content: coords[1]+", "+coords[2]+", "+coords[3]+", "+coords[4]
+                            content: coords[1]+", "+coords[2]+", "+coords[3]+", "+coords[4]+"<br>"+"Disposition: "+coords[7]+" ("+coords[8].trim()+")"
                           };
                         var point = {type: "point", longitude: coords[6],latitude: coords[5], size: "1px"};
-                        var pointGraphic = new Graphic({geometry: point, symbol: markerSymbol, popupTemplate: popupTemplate});
+                        
+                        if(coords[7] == "BLOCK"){
+                            var pointGraphic = new Graphic({geometry: point, symbol: markerSymbolBlocked, popupTemplate: popupTemplate});
+                        }else{
+                            var pointGraphic = new Graphic({geometry: point, symbol: markerSymbolAllowed, popupTemplate: popupTemplate});
+                        }
+                        
                         view.graphics.addMany([pointGraphic]);
                     }
                 }
